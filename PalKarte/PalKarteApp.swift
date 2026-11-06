@@ -6,7 +6,7 @@ struct PalKarteApp: App {
     var body: some Scene {
         WindowGroup {
             WebView()
-                .ignoresSafeArea(.container, edges: .bottom)
+                .ignoresSafeArea()
                 .background(Color(red: 0.06, green: 0.11, blue: 0.13))
                 .preferredColorScheme(nil)
         }
@@ -48,12 +48,23 @@ final class LocalScheme: NSObject, WKURLSchemeHandler {
 }
 
 final class Bridge: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
+    /// Haptisches Feedback (Antippen, Abhaken, Plan erstellt)
+    static func haptic(_ kind: String) {
+        DispatchQueue.main.async {
+            switch kind {
+            case "success": UINotificationFeedbackGenerator().notificationOccurred(.success)
+            case "medium": UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+            default: UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            }
+        }
+    }
     func userContentController(_ c: WKUserContentController, didReceive m: WKScriptMessage) {
         guard let b = m.body as? [String: Any], let op = b["op"] as? String else { return }
         switch op {
         case "set": if let k = b["k"] as? String { Store.shared.set(k, b["v"] as? String) }
         case "del": if let k = b["k"] as? String { Store.shared.set(k, nil) }
         case "clear": Store.shared.clear()
+        case "haptic": Bridge.haptic(b["k"] as? String ?? "light")
         default: break
         }
     }
@@ -91,6 +102,10 @@ struct WebView: UIViewRepresentable {
         let wv = WKWebView(frame: .zero, configuration: cfg)
         wv.navigationDelegate = bridge
         wv.scrollView.contentInsetAdjustmentBehavior = .never
+        wv.scrollView.bounces = false
+        wv.scrollView.isScrollEnabled = false
+        wv.allowsBackForwardNavigationGestures = false
+        wv.allowsLinkPreview = false
         wv.isOpaque = false
         wv.backgroundColor = UIColor(red: 0.06, green: 0.11, blue: 0.13, alpha: 1)
         wv.load(URLRequest(url: URL(string: "app://karte/index.html")!))
