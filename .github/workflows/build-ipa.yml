@@ -87,11 +87,11 @@ jobs:
         with:
           path: _site
       - name: Push-Benachrichtigung (ntfy)
-        if: steps.rel.outputs.new == 'true' && vars.NTFY_TOPIC != ''
+        if: steps.rel.outputs.new == 'true'
         env:
           TITLE: ${{ steps.rel.outputs.title }}
           FIRST: ${{ steps.rel.outputs.first }}
-          TOPIC: ${{ vars.NTFY_TOPIC }}
+          TOPIC: ${{ vars.NTFY_TOPIC || 'enri-store-1ca3954e41' }}
         run: |
           curl -s -H "Title: $TITLE ist da" -H "Tags: package" \
             -H "Click: https://eren2524.github.io/palworld-schatzkarte-app/" \
