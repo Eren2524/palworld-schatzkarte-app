@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Enriques Store</title>
+<meta name="description" content="Eigene iPhone-Apps für SideStore und AltStore – immer aktuell.">
+<meta name="theme-color" content="#0f1c21">
+<link rel="icon" href="assets/store-icon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{
+  --bg:#0f1c21; --bg2:#14262c; --card:#182d34; --line:#24414a; --text:#eef4f5; --muted:#93aab0;
+  --accent:#f5b731; --accent-ink:#1a1405; --ok:#3ddc84; --beta:#7c8cff; --radius:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--text);font:16px/1.5 Inter,system-ui,-apple-system,sans-serif;
+  padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+a{color:inherit}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+header.hero{position:relative;overflow:hidden;padding:40px 0 28px;
+  background:linear-gradient(180deg,rgba(15,28,33,.15),var(--bg) 92%),url(assets/header.jpg) center/cover}
+.brand{display:flex;gap:16px;align-items:center}
+.brand img{width:76px;height:76px;border-radius:18px;box-shadow:0 8px 30px rgba(0,0,0,.45)}
+.brand h1{font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.brand p{color:var(--muted);font-size:15px;margin-top:4px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:50px;border-radius:14px;border:1px solid var(--line);
+  background:var(--card);color:var(--text);font:600 15px Inter,sans-serif;text-decoration:none;cursor:pointer;padding:0 14px;
+  transition:transform .12s, background .2s}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);grid-column:1/-1;font-size:17px;min-height:56px}
+.btn svg{width:20px;height:20px;flex:none}
+.seg{display:inline-flex;background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:3px;margin-top:18px}
+.seg button{border:0;background:none;color:var(--muted);font:600 14px Inter,sans-serif;padding:8px 16px;border-radius:9px;cursor:pointer}
+.seg button.on{background:var(--accent);color:var(--accent-ink)}
+.seg button.on.beta{background:var(--beta);color:#0b0e2a}
+.hint{font-size:13px;color:var(--muted);margin-top:10px}
+section{margin-top:34px}
+h2{font-size:20px;font-weight:800;letter-spacing:-.01em;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.news{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;margin:0 -16px;padding-left:16px;padding-right:16px}
+.news::-webkit-scrollbar,.shots::-webkit-scrollbar{display:none}
+.news .card{flex:0 0 82%;max-width:320px;scroll-snap-align:start;border-left:4px solid var(--accent);display:flex;flex-direction:column;gap:6px}
+.news .date{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.news h3{font-size:16px;font-weight:700;line-height:1.3}
+.news p{font-size:14px;color:var(--muted)}
+.app{display:flex;flex-direction:column;gap:16px}
+.app-top{display:flex;gap:14px;align-items:center}
+.app-top img{width:72px;height:72px;border-radius:16px}
+.app-top h3{font-size:20px;font-weight:800}
+.app-top .sub{color:var(--muted);font-size:14px}
+.meta{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0;text-align:center}
+.meta div+div{border-left:1px solid var(--line)}
+.meta b{display:block;font-size:16px;font-weight:700}
+.meta span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.shots{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -18px;padding:0 18px}
+.shots img{height:360px;border-radius:14px;border:1px solid var(--line);scroll-snap-align:start;flex:none}
+.desc{color:#c9d7da;font-size:15px}
+.new{background:var(--bg2);border-radius:14px;padding:14px}
+.new h4{font-size:14px;font-weight:700;margin-bottom:6px;display:flex;justify-content:space-between;gap:8px}
+.new h4 span{color:var(--muted);font-weight:500}
+.new ul{padding-left:18px;font-size:14px;color:#c9d7da}
+.pill{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--beta);color:#0b0e2a;vertical-align:middle}
+details{border-top:1px solid var(--line);padding-top:12px}
+summary{cursor:pointer;font-weight:600;font-size:15px;list-style:none;display:flex;justify-content:space-between}
+summary::after{content:"＋";color:var(--muted)}
+details[open] summary::after{content:"－"}
+.ver{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}
+.ver:last-child{border-bottom:0}
+.ver small{display:block;color:var(--muted)}
+.ver a{font-weight:600;color:var(--accent);text-decoration:none;white-space:nowrap}
+.steps{counter-reset:s;display:grid;gap:10px}
+.step{display:flex;gap:14px;align-items:flex-start}
+.step::before{counter-increment:s;content:counter(s);flex:none;width:32px;height:32px;border-radius:50%;background:var(--accent);color:var(--accent-ink);
+  display:grid;place-items:center;font-weight:800}
+.step b{display:block}
+.step p{color:var(--muted);font-size:14px}
+.rec{display:grid;gap:10px}
+.rec a{display:flex;justify-content:space-between;align-items:center;gap:12px;text-decoration:none}
+.rec b{display:block}
+.rec p{color:var(--muted);font-size:14px}
+.rec .arrow{color:var(--accent);font-size:20px}
+#qrbox{display:none;margin-top:14px;text-align:center}
+#qrbox.on{display:block}
+#qr{display:inline-block;background:#fff;padding:14px;border-radius:16px}
+#qr img,#qr canvas{display:block;width:200px;height:200px}
+.url{font:500 13px ui-monospace,Menlo,monospace;color:var(--muted);word-break:break-all;margin-top:10px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translate(-50%,40px);opacity:0;background:var(--text);color:var(--bg);
+  padding:12px 18px;border-radius:12px;font-weight:600;font-size:14px;transition:.25s;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+footer{margin:46px 0 30px;color:var(--muted);font-size:13px;text-align:center}
+.empty{color:var(--muted);text-align:center;padding:30px 0}
+@media (max-width:420px){.shots img{height:300px}.meta b{font-size:14px}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="brand">
+      <img src="assets/store-icon.png" alt="">
+      <div><h1 id="storeName">Enriques Store</h1><p id="storeSub">Eigene iPhone-Apps, immer aktuell</p></div>
+    </div>
+    <div class="seg" role="tablist" aria-label="Kanal">
+      <button id="chStable" class="on" role="tab">Stabil</button>
+      <button id="chBeta" role="tab">Beta</button>
+    </div>
+    <div class="actions">
+      <a class="btn primary" id="addSide" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        In SideStore hinzufügen</a>
+      <a class="btn" id="addAlt" href="#">In AltStore</a>
+      <button class="btn" id="copyBtn">Link kopieren</button>
+      <button class="btn" id="qrBtn" style="grid-column:1/-1">QR-Code zum Teilen</button>
+    </div>
+    <div id="qrbox"><div id="qr"></div><div class="url" id="srcUrl"></div></div>
+    <p class="hint" id="chHint">Stabile Versionen – für den Alltag.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section><h2>Neuigkeiten</h2><div class="news" id="news"></div></section>
+  <section><h2>Apps</h2><div id="apps" class="app-list"><p class="empty">Lade Apps …</p></div></section>
+  <section>
+    <h2>So installierst du</h2>
+    <div class="card steps">
+      <div class="step"><div><b>SideStore einrichten</b><p>Einmalig mit dem PC auf das iPhone bringen (Anleitung auf sidestore.io). Danach läuft alles direkt auf dem iPhone.</p></div></div>
+      <div class="step"><div><b>Store hinzufügen</b><p>Oben auf „In SideStore hinzufügen“ tippen oder den Link kopieren und in SideStore unter <i>Quellen → +</i> einfügen.</p></div></div>
+      <div class="step"><div><b>App laden</b><p>In SideStore unter <i>Durchsuchen</i> die App antippen und installieren. Updates erscheinen dann automatisch unter <i>Meine Apps</i>.</p></div></div>
+    </div>
+  </section>
+  <section><h2>Empfehlungen</h2><div class="rec" id="rec"></div></section>
+  <footer>Enriques Store · Updates erscheinen automatisch nach jedem Build</footer>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  const base = new URL('.', location.href).href;
+  const $ = id => document.getElementById(id);
+  let channel = 'stable', downloads = {}, siteInfo = {apps:{}, recommended:[]};
+  const srcUrl = () => base + (channel === 'beta' ? 'apps-beta.json' : 'apps.json');
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const fmtDate = d => d ? new Date(d).toLocaleDateString('de-DE', {day:'numeric', month:'short', year:'numeric'}) : '';
+  const fmtSize = b => b ? (b / 1048576).toFixed(1).replace('.', ',') + ' MB' : '–';
+  const toast = t => { const el = $('toast'); el.textContent = t; el.classList.add('on'); setTimeout(() => el.classList.remove('on'), 1800); };
+  const notesHtml = t => {
+    const lines = String(t || '').replace(/^Beta:\s*/, '').split('\n').map(l => l.trim()).filter(Boolean);
+    return lines.every(l => l.startsWith('-')) ? '<ul>' + lines.map(l => '<li>' + esc(l.replace(/^-\s*/, '')) + '</li>').join('') + '</ul>' : '<p>' + lines.map(esc).join('<br>') + '</p>';
+  };
+
+  function updateLinks() {
+    const u = srcUrl();
+    $('addSide').href = 'sidestore://source?url=' + encodeURIComponent(u);
+    $('addAlt').href = 'altstore://source?url=' + encodeURIComponent(u);
+    $('srcUrl').textContent = u;
+    $('chHint').textContent = channel === 'beta' ? 'Beta-Kanal: Testversionen zuerst, kann Fehler enthalten. Als eigene Quelle neben der stabilen nutzbar.' : 'Stabile Versionen – für den Alltag.';
+    $('chStable').className = channel === 'stable' ? 'on' : '';
+    $('chBeta').className = channel === 'beta' ? 'on beta' : '';
+    if ($('qrbox').classList.contains('on')) drawQr();
+  }
+  function drawQr() {
+    $('qr').innerHTML = '';
+    if (window.QRCode) new QRCode($('qr'), {text: srcUrl(), width: 400, height: 400, correctLevel: QRCode.CorrectLevel.M});
+    else $('qr').textContent = 'QR-Code nicht verfügbar';
+  }
+
+  function renderNews(news) {
+    $('news').innerHTML = news.length ? news.slice(0, 8).map(n => `
+      <article class="card" style="border-left-color:${esc(n.tintColor || 'var(--accent)')}">
+        <div class="date">${esc(fmtDate(n.date))}</div><h3>${esc(n.title)}</h3><p>${esc(n.caption)}</p>
+      </article>`).join('') : '<p class="empty">Noch keine Neuigkeiten.</p>';
+  }
+
+  function renderApps(apps) {
+    if (!apps.length) { $('apps').innerHTML = '<p class="empty">Noch keine Apps veröffentlicht.</p>'; return; }
+    $('apps').innerHTML = apps.map(a => {
+      const v = a.versions || [], latest = v[0];
+      const dl = downloads[a.bundleIdentifier];
+      const isBeta = latest && /^Beta:/.test(latest.localizedDescription || '');
+      return `<article class="card app">
+        <div class="app-top"><img src="${esc(a.iconURL)}" alt="">
+          <div><h3>${esc(a.name)} ${isBeta ? '<span class="pill">BETA</span>' : ''}</h3><div class="sub">${esc(a.subtitle)}</div></div></div>
+        <div class="meta">
+          <div><b>${latest ? esc(latest.version) : '–'}</b><span>Version</span></div>
+          <div><b>${latest ? fmtSize(latest.size) : '–'}</b><span>Größe</span></div>
+          <div><b>${dl ? dl.total.toLocaleString('de-DE') : '–'}</b><span>Downloads</span></div>
+          <div><b>iOS ${esc(latest ? latest.minOSVersion : '16')}</b><span>Ab</span></div>
+        </div>
+        ${(a.screenshots || []).length ? `<div class="shots">${a.screenshots.map(s => `<img loading="lazy" src="${esc(s)}" alt="">`).join('')}</div>` : ''}
+        <p class="desc">${esc(a.localizedDescription)}</p>
+        ${latest ? `<div class="new"><h4>Was ist neu <span>${esc(fmtDate(latest.date))}</span></h4>${notesHtml(latest.localizedDescription)}</div>
+          <a class="btn primary" href="${esc(latest.downloadURL)}">IPA herunterladen (${esc(latest.version)})</a>` : '<p class="empty">Noch kein Build veröffentlicht.</p>'}
+        ${v.length > 1 ? `<details><summary>Ältere Versionen (${v.length - 1})</summary>
+          ${v.slice(1).map(x => `<div class="ver"><div>${esc(x.version)} ${/^Beta:/.test(x.localizedDescription) ? '<span class="pill">BETA</span>' : ''}
+            <small>${esc(fmtDate(x.date))} · ${fmtSize(x.size)}${dl && dl.byUrl[x.downloadURL] != null ? ' · ' + dl.byUrl[x.downloadURL] + '× geladen' : ''}</small></div>
+            <a href="${esc(x.downloadURL)}">Laden</a></div>`).join('')}</details>` : ''}
+      </article>`;
+    }).join('');
+  }
+
+  function renderRec(list) {
+    $('rec').innerHTML = list.map(r => `<a class="card" href="${esc(r.url)}" target="_blank" rel="noopener">
+      <div><b>${esc(r.name)}</b><p>${esc(r.text)}</p></div><span class="arrow">›</span></a>`).join('');
+  }
+
+  async function loadDownloads() {
+    const repos = {};
+    for (const [bid, info] of Object.entries(siteInfo.apps || {})) (repos[info.repo] ||= []).push([bid, info.tagPrefix]);
+    for (const [repo, list] of Object.entries(repos)) {
+      try {
+        const r = await fetch(`https://api.github.com/repos/${repo}/releases?per_page=100`);
+        if (!r.ok) continue;
+        const rel = await r.json();
+        for (const [bid, prefix] of list) {
+          const d = {total: 0, byUrl: {}};
+          rel.filter(x => x.tag_name.startsWith(prefix)).forEach(x => x.assets.forEach(a => {
+            d.total += a.download_count; d.byUrl[a.browser_download_url] = a.download_count;
+          }));
+          downloads[bid] = d;
+        }
+      } catch (e) { /* Zaehler ist optional */ }
+    }
+  }
+
+  let current = null;
+  async function load() {
+    updateLinks();
+    try {
+      const r = await fetch(srcUrl(), {cache: 'no-cache'});
+      current = await r.json();
+      $('storeName').textContent = current.name.replace(' (Beta)', '');
+      $('storeSub').textContent = current.subtitle || '';
+      renderNews(current.news || []);
+      renderApps(current.apps || []);
+    } catch (e) {
+      $('apps').innerHTML = '<p class="empty">Store konnte nicht geladen werden.</p>';
+    }
+  }
+
+  $('chStable').onclick = () => { channel = 'stable'; load(); };
+  $('chBeta').onclick = () => { channel = 'beta'; load(); };
+  $('copyBtn').onclick = async () => {
+    try { await navigator.clipboard.writeText(srcUrl()); toast('Store-Link kopiert'); }
+    catch (e) { prompt('Store-Link kopieren:', srcUrl()); }
+  };
+  $('qrBtn').onclick = () => { $('qrbox').classList.toggle('on'); if ($('qrbox').classList.contains('on')) drawQr(); };
+
+  fetch(base + 'site.json').then(r => r.json()).then(async s => {
+    siteInfo = s; renderRec(s.recommended || []);
+    await loadDownloads(); if (current) renderApps(current.apps || []);
+  }).catch(() => {});
+  load();
+})();
+</script>
+</body>
+</html>

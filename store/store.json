@@ -1,0 +1,39 @@
+{
+  "name": "Enriques Store",
+  "subtitle": "Eigene iPhone-Apps, immer aktuell",
+  "description": "Mein privater App-Store für SideStore und AltStore. Neue Versionen erscheinen hier automatisch, sobald sie gebaut sind.",
+  "website": "https://eren2524.github.io/palworld-schatzkarte-app/",
+  "baseURL": "https://eren2524.github.io/palworld-schatzkarte-app/",
+  "tintColor": "#F5B731",
+  "iconURL": "assets/store-icon.png",
+  "headerURL": "assets/header.jpg",
+  "featuredApps": ["com.eren2524.palkarte"],
+  "apps": [
+    {
+      "name": "Schatzkarte",
+      "bundleIdentifier": "com.eren2524.palkarte",
+      "repo": "Eren2524/palworld-schatzkarte-app",
+      "tagPrefix": "schatzkarte-v",
+      "asset": "Schatzkarte.ipa",
+      "developerName": "Enrique",
+      "subtitle": "Palworld-Karte mit Plan, Pals und Guide",
+      "localizedDescription": "Offline-Schatzkarte für Palworld: alle seltenen Statuen, Türme, Alphas und Pal-Spawns auf einer Vollbild-Karte. Gib dein Level ein und du bekommst einen Schritt-für-Schritt-Plan, wohin du fliegst und was du dort holst. Häkchen und Plan bleiben bei Updates erhalten.",
+      "category": "games",
+      "tintColor": "#F5B731",
+      "iconURL": "assets/schatzkarte-icon.png",
+      "screenshots": [
+        "assets/schatzkarte-1.jpg",
+        "assets/schatzkarte-2.jpg",
+        "assets/schatzkarte-3.jpg",
+        "assets/schatzkarte-4.jpg"
+      ],
+      "minOSVersion": "16.0"
+    }
+  ],
+  "recommended": [
+    { "name": "SideStore", "text": "Die App, über die du diesen Store nutzt. Signiert Apps per WLAN neu.", "url": "https://sidestore.io" },
+    { "name": "Delta", "text": "Emulator für Nintendo-Klassiker (NES bis DS). Kostenlos, Open Source.", "url": "https://deltaemulator.com" },
+    { "name": "UTM SE", "text": "Virtuelle Maschinen auf dem iPhone, z. B. ein altes Windows.", "url": "https://getutm.app" },
+    { "name": "Provenance", "text": "Multi-Emulator für viele Retro-Konsolen.", "url": "https://provenance-emu.com" }
+  ]
+}

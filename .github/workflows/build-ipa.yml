@@ -1,13 +1,29 @@
-name: IPA bauen
+name: IPA bauen und Store aktualisieren
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
+    inputs:
+      channel:
+        description: "Kanal: stable = normales Update, beta = Testversion"
+        type: choice
+        options: [ stable, beta ]
+        default: stable
+
+concurrency:
+  group: store-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: macos-15
+    outputs:
+      version: ${{ steps.ver.outputs.version }}
     steps:
       - uses: actions/checkout@v4
+      - name: Version lesen
+        id: ver
+        run: echo "version=$(python3 store/generate.py version)" >> "$GITHUB_OUTPUT"
       - name: XcodeGen installieren
         run: brew install xcodegen
       - name: Xcode-Projekt erzeugen
@@ -16,7 +32,8 @@ jobs:
         run: |
           xcodebuild -project PalKarte.xcodeproj -scheme PalKarte -configuration Release \
             -sdk iphoneos -destination 'generic/platform=iOS' \
-            -derivedDataPath build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" build
+            -derivedDataPath build CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            CURRENT_PROJECT_VERSION=${{ github.run_number }} build
       - name: IPA packen
         run: |
           mkdir -p Payload
@@ -27,3 +44,69 @@ jobs:
         with:
           name: Schatzkarte-IPA
           path: Schatzkarte.ipa
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      VERSION: ${{ needs.build.outputs.version }}
+      CHANNEL: ${{ inputs.channel || 'stable' }}
+      BUILD: ${{ github.run_number }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: Schatzkarte-IPA
+      - name: Release anlegen (nur bei neuer Version oder Beta)
+        id: rel
+        run: |
+          if [ "$CHANNEL" = "beta" ]; then
+            TAG="schatzkarte-v${VERSION}-beta.${BUILD}"; NOTES="$(python3 store/generate.py notes 'Unveröffentlicht')"; FLAG="--prerelease"
+            TITLE="Schatzkarte ${VERSION} Beta (Build ${BUILD})"
+          else
+            TAG="schatzkarte-v${VERSION}"; NOTES="$(python3 store/generate.py notes "$VERSION")"; FLAG=""
+            TITLE="Schatzkarte ${VERSION}"
+          fi
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG gibt es schon – nur der Store wird neu gebaut."
+            echo "new=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          [ -z "$NOTES" ] && NOTES="- Fehlerbehebungen und Verbesserungen."
+          printf '%s\n\n<!-- build: %s -->\n' "$NOTES" "$BUILD" > notes.md
+          gh release create "$TAG" Schatzkarte.ipa --title "$TITLE" --notes-file notes.md $FLAG
+          {
+            echo "new=true"; echo "title=$TITLE"
+            echo "first=$(printf '%s' "$NOTES" | head -n1 | sed 's/^- //')"
+          } >> "$GITHUB_OUTPUT"
+      - name: Store-Quellen und Webseite erzeugen
+        run: python3 store/generate.py build --out _site
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Push-Benachrichtigung (ntfy)
+        if: steps.rel.outputs.new == 'true' && vars.NTFY_TOPIC != ''
+        env:
+          TITLE: ${{ steps.rel.outputs.title }}
+          FIRST: ${{ steps.rel.outputs.first }}
+          TOPIC: ${{ vars.NTFY_TOPIC }}
+        run: |
+          curl -s -H "Title: $TITLE ist da" -H "Tags: package" \
+            -H "Click: https://eren2524.github.io/palworld-schatzkarte-app/" \
+            -d "$FIRST - jetzt in SideStore aktualisieren." \
+            "https://ntfy.sh/$TOPIC" > /dev/null
+
+  deploy:
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.dep.outputs.page_url }}
+    steps:
+      - id: dep
+        uses: actions/deploy-pages@v4
