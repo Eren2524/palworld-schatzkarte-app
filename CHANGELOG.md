@@ -6,6 +6,11 @@ Neuer Eintrag = neues Update im Store: Version in `project.yml` (`MARKETING_VERS
 
 - Testversion aus dem Beta-Kanal.
 
+## 3.0
+- Komplett neues Design im Apple-Stil: dunkle Glas-Leisten, Segment-Tabs unten, größere Schrift
+- Futuristische Neon-Akzente (Cyan und Gold), klarere Schritt-Karten im Plan
+- Größerer Level-Regler, übersichtlichere Suche mit Koordinaten-Chips
+
 ## 2.0
 
 - Karte im Vollbild, Bedienung über ein Bottom-Sheet mit Tabs: Plan, Karte, Pals, Wissen.
