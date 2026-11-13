@@ -681,7 +681,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
   --sheetvis:128px; --r:22px; color-scheme:dark;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;margin:0;overflow:hidden;overscroll-behavior:none;position:fixed;inset:0}
+html,body{height:100%;margin:0;overflow:hidden;overflow:clip;overscroll-behavior:none;position:fixed;inset:0}
 body{background:var(--sea);color:var(--ink);font:16px/1.45 var(--f-body);-webkit-font-smoothing:antialiased;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 button{font-family:inherit;color:inherit}
 button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -715,11 +715,12 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 .chips{position:absolute;z-index:19;top:calc(var(--sat) + 68px);left:0;right:0;display:flex;gap:8px;padding:0 calc(var(--sal) + 12px);overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-padding:12px}
 .chips::-webkit-scrollbar{display:none}
 .chips::after{content:"";flex:none;width:4px}
-.chip{flex:none;display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:9px 14px;font:700 13px var(--f-body);appearance:none;cursor:pointer;color:var(--ink);white-space:nowrap;transition:transform .15s,background .2s,color .2s,box-shadow .2s}
+.chip{flex:none;display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:0 15px;min-height:44px;font:700 13px var(--f-body);appearance:none;cursor:pointer;color:var(--ink);white-space:nowrap;transition:transform .15s,background .2s,color .2s,box-shadow .2s}
 .chip:active{transform:scale(.95)}
 .chip i{width:9px;height:9px;border-radius:50%;background:var(--c,var(--muted));box-shadow:0 0 8px var(--c,transparent)}
 .chip[aria-pressed="true"]{background:var(--ink);color:#07101a;border-color:transparent}
 .chip.seg{padding:4px;gap:0}
+.chip.seg button{min-height:36px}
 .chip.seg button{appearance:none;border:0;background:transparent;color:var(--muted);font:700 13px var(--f-body);padding:6px 12px;border-radius:999px;cursor:pointer;transition:background .2s,color .2s}
 .chip.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);box-shadow:0 0 14px var(--glow)}
 
@@ -788,7 +789,7 @@ a{color:var(--blue)}
 input[type=number],select,input[type=search],input[type=text]{font:600 16px var(--f-body);color:var(--ink);background:var(--chip);border:1px solid var(--line);border-radius:14px;padding:12px 14px;width:100%;min-width:0;appearance:none;-webkit-appearance:none}
 select{background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 18px) 55%,calc(100% - 13px) 55%;background-size:5px 5px;background-repeat:no-repeat;padding-right:34px}
 .checks{display:flex;flex-wrap:wrap;gap:6px;grid-column:1/-1}
-.pill{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:13.5px;font-weight:700;cursor:pointer;background:var(--chip);user-select:none}
+.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:0 14px;min-height:44px;font-size:13.5px;font-weight:700;cursor:pointer;background:var(--chip);user-select:none}
 .pill input{margin:0;width:18px;height:18px;accent-color:var(--accent)}
 .pill:has(input:checked){border-color:rgba(25,211,255,.5);background:rgba(25,211,255,.1)}
 .stepper{display:flex;align-items:stretch;border:1px solid var(--line2);border-radius:20px;overflow:hidden;max-width:300px;background:linear-gradient(180deg,rgba(25,211,255,.08),rgba(25,211,255,.02)),var(--chip);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
@@ -797,10 +798,10 @@ select{background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),
 .stepper input[type=number]{flex:1;text-align:center;font:800 42px var(--f-display);border:0;border-radius:0;background:transparent;padding:8px 0;min-width:0;-moz-appearance:textfield;letter-spacing:-.02em}
 .stepper input::-webkit-outer-spin-button,.stepper input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .btnrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-.btn{appearance:none;border:1px solid var(--line);background:var(--chip);color:var(--ink);font:700 14px var(--f-body);padding:11px 16px;border-radius:14px;cursor:pointer;transition:transform .12s,filter .12s}
+.btn{appearance:none;border:1px solid var(--line);background:var(--chip);color:var(--ink);font:700 15px var(--f-body);padding:0 16px;min-height:46px;display:inline-flex;align-items:center;justify-content:center;border-radius:14px;cursor:pointer;transition:transform .12s,filter .12s}
 .btn:active{transform:scale(.96);filter:brightness(1.2)}
 .btn.primary{background:var(--accent);border-color:transparent;color:var(--accent-ink);box-shadow:0 8px 24px var(--glow)}
-.btn.big{padding:15px 24px;font-size:17px;border-radius:16px;flex:1;text-align:center}
+.btn.big{padding:0 24px;min-height:54px;font-size:17px;border-radius:16px;flex:1;text-align:center}
 .btn.ghost{background:transparent;border-color:transparent;color:var(--muted)}
 .btn.danger{color:var(--bad)}
 .btn[aria-pressed="true"]{background:var(--ink);color:#07101a;border-color:transparent}
@@ -809,7 +810,7 @@ select{background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),
 .seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
 .callout{border-left:3px solid var(--accent);padding:10px 13px;background:rgba(25,211,255,.07);border-radius:0 14px 14px 0;margin:10px 0;font-size:14.5px}
 .callout.bad{border-left-color:var(--bad);background:rgba(255,92,122,.08)}
-details.fine summary,details.all summary{cursor:pointer;font-weight:700;font-size:14.5px;margin-top:16px;color:var(--blue)}
+details.fine summary,details.all summary{cursor:pointer;font-weight:700;font-size:15px;margin-top:12px;color:var(--blue);min-height:44px;display:flex;align-items:center}
 .progtop{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:14px;align-items:baseline}
 .progtop b{font:800 18px var(--f-display)}
 .mins{font:700 13px var(--f-data);color:var(--accent);white-space:nowrap}
@@ -837,11 +838,19 @@ ol.tasks li.done .tt{text-decoration:line-through;color:var(--muted)}
 .advice li{margin:8px 0}
 .nextup{margin-top:10px;padding:12px 14px;border:1px dashed var(--line2);border-radius:14px;font-size:14.5px;display:flex;gap:10px;align-items:center}
 ol.allsteps{padding-left:24px;margin:8px 0 0;font-size:14.5px}
-ol.allsteps li{margin:6px 0}
+ol.allsteps li{margin:2px 0}
 ol.allsteps li.done{opacity:.5}
 ol.allsteps li.now{font-weight:800;color:var(--accent)}
-.linkbtn{appearance:none;border:0;background:none;color:var(--blue);font:inherit;cursor:pointer;padding:0;text-align:left}
+.linkbtn{appearance:none;border:0;background:none;color:var(--blue);font:inherit;cursor:pointer;padding:6px 0;text-align:left}
 .tablewrap{overflow-x:auto;margin:6px -4px;border-radius:14px}
+.palcards{display:flex;flex-direction:column;gap:8px;margin:6px 0 4px}
+.palcard{border:1px solid var(--line);border-radius:16px;padding:12px 14px;background:var(--chip)}
+.palcard .pn{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.palcard .pn b{font:800 16px var(--f-body)}
+.palcard .pn span{font:700 11px var(--f-body);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.palcard .pw{font-size:14px;color:var(--muted);line-height:1.45;margin:4px 0 2px}
+.palcard .pl{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.palcard .pl .chipbtn{margin:0}
 table{border-collapse:collapse;width:100%;font-size:14px}
 th,td{text-align:left;padding:9px 8px 9px 4px;border-bottom:1px solid var(--line);vertical-align:top}
 th{font:700 11px var(--f-body);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
@@ -852,11 +861,11 @@ ol.steps li{margin:7px 0}
 ul.plain{padding-left:18px;margin:6px 0}
 ul.plain li{margin:5px 0}
 .cards{display:flex;flex-direction:column;gap:8px}
-details.icard,details.gl{border:1px solid var(--line);border-radius:16px;padding:12px 14px;background:var(--chip);transition:border-color .2s}
+details.icard,details.gl{border:1px solid var(--line);border-radius:16px;padding:4px 14px 12px;background:var(--chip);transition:border-color .2s}
 details.icard[open],details.gl[open]{border-color:var(--line2);background:var(--panel2)}
 details.icard summary,details.gl summary{cursor:pointer;list-style:none}
-details.icard summary{display:flex;flex-direction:column;gap:3px}
-details.gl summary{display:flex;justify-content:space-between;align-items:center;gap:8px}
+details.icard summary{display:flex;flex-direction:column;gap:3px;min-height:44px;justify-content:center;padding:8px 0 4px}
+details.gl summary{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:48px}
 details summary::-webkit-details-marker{display:none}
 .iname,.gname{font-weight:800;font-size:16px}
 .iname::after{content:" ›";color:var(--accent)}
@@ -869,7 +878,7 @@ details.icard dl{margin:8px 0 0;font-size:14.5px}
 details.icard dt{font:700 11px var(--f-body);text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-top:10px}
 details.icard dd{margin:3px 0 0;line-height:1.5}
 details.icard .btn{margin-top:12px}
-.chipbtn{appearance:none;border:1px solid rgba(25,211,255,.3);background:rgba(25,211,255,.08);color:var(--ink);font:600 12.5px var(--f-body);padding:6px 10px;border-radius:999px;cursor:pointer;margin:2px 4px 2px 0;display:inline-flex;align-items:center;gap:4px}
+.chipbtn{appearance:none;border:1px solid rgba(25,211,255,.3);background:rgba(25,211,255,.08);color:var(--ink);font:600 13px var(--f-body);padding:0 12px;min-height:40px;border-radius:999px;cursor:pointer;margin:2px 4px 2px 0;display:inline-flex;align-items:center;gap:4px}
 .chipbtn .coord{background:transparent;border:0;padding:0}
 .glist{display:flex;flex-direction:column;gap:6px;margin-top:8px}
 
@@ -889,7 +898,7 @@ details.icard .btn{margin-top:12px}
 .stat span{font:700 10.5px var(--f-body);color:var(--muted);text-transform:uppercase;letter-spacing:.08em;line-height:1.3;display:block;margin-top:4px}
 .layers{display:flex;flex-direction:column;gap:16px}
 .lgroup h3{margin:0 0 8px;font-size:11.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);display:flex;justify-content:space-between;align-items:center}
-.lgroup h3 button{appearance:none;border:0;background:none;color:var(--muted);font:700 12px var(--f-body);cursor:pointer;text-transform:none;letter-spacing:0}
+.lgroup h3 button{appearance:none;border:0;background:none;color:var(--muted);font:700 13px var(--f-body);cursor:pointer;text-transform:none;letter-spacing:0;min-height:44px;padding:0 4px}
 .lrow{display:grid;grid-template-columns:38px 1fr auto;gap:12px;align-items:center;padding:10px 12px;border-radius:14px;background:var(--chip);cursor:pointer;margin-bottom:6px;border:1px solid transparent;transition:opacity .2s,border-color .2s}
 .lrow.on{border-color:var(--line)}
 .lrow:not(.on){opacity:.5}
@@ -908,7 +917,7 @@ details.icard .btn{margin-top:12px}
 .detail{position:absolute;z-index:35;left:calc(var(--sal) + 10px);right:calc(var(--sar) + 10px);bottom:calc(var(--sheetvis) + 10px);border-radius:22px;padding:16px 16px 16px 20px;overflow:hidden;transform:translateY(16px) scale(.98);opacity:0;transition:transform .28s cubic-bezier(.2,.8,.2,1),opacity .2s,bottom .34s cubic-bezier(.2,.8,.2,1);border-color:var(--line2)}
 .detail.show{transform:none;opacity:1}
 .detail::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c);box-shadow:0 0 14px var(--c)}
-.detail .close{position:absolute;right:12px;top:12px;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--chip);color:var(--muted);font:800 15px var(--f-body);cursor:pointer}
+.detail .close{position:absolute;right:10px;top:10px;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--chip);color:var(--muted);font:800 15px var(--f-body);cursor:pointer}
 .detail .cat{font:700 11px var(--f-body);text-transform:uppercase;letter-spacing:.1em;color:var(--c);display:flex;align-items:center;gap:6px;padding-right:36px}
 .detail h4{margin:4px 0 4px;font:800 21px/1.2 var(--f-display);letter-spacing:-.02em;padding-right:36px}
 .detail .row{font-size:14px;margin-top:6px;color:var(--muted);line-height:1.45}
@@ -919,7 +928,7 @@ details.icard .btn{margin-top:12px}
 @keyframes pop{0%{transform:scale(.4)}100%{transform:scale(1)}}
 .detail .cnt{font:700 12px var(--f-data);color:var(--muted);margin-left:auto}
 .detail .nav{display:flex;gap:6px}
-.detail .nav button{appearance:none;border:1px solid var(--line);background:var(--chip);width:36px;height:36px;border-radius:12px;font:800 16px var(--f-display);cursor:pointer}
+.detail .nav button{appearance:none;border:1px solid var(--line);background:var(--chip);width:44px;height:44px;border-radius:12px;font:800 16px var(--f-display);cursor:pointer}
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 @media (min-width:821px){
@@ -1390,7 +1399,7 @@ function renderResults(q){
   const pals=palNames.filter(n=>n.toLowerCase().includes(q)).slice(0,5);
   const pts=SEARCHABLE.filter(o=>inWorld(o)&&(itemName(o).toLowerCase().includes(q)||(o.d&&o.d.toLowerCase().includes(q))||CATS[o.c].l.toLowerCase().includes(q))).slice(0,14);
   let h=pals.map(n=>`<button class="res" data-pal="${esc(n)}" style="--c:#ff4fa3"><i></i><span><b>${esc(n)}</b><small>Wilde Spawnpunkte zeigen</small></span><span></span></button>`).join('');
-  h+=pts.map(o=>`<button class="res" data-id="${o.i}" style="--c:${CATS[o.c].col}"><i></i><span><b>${esc(dispName(o))}${done.has(o.i)?' ✓':''}</b><small>${esc(CATS[o.c].l)}${(o.d&&dispName(o)!==o.d&&dispName(o)!==opName(o.d))?' · '+esc(o.d):''}</small></span><span class="coord">${o.x}, ${o.y}</span></button>`).join('');
+  h+=pts.map(o=>`<button class="res" data-id="${o.i}" style="--c:${CATS[o.c].col}"><i></i><span><b>${esc(dispName(o))}${done.has(o.i)?' ✓':''}</b><small>${esc(dispName(o)===CATS[o.c].l ? (o.tree?'Weltbaum':regionOf(o)) : CATS[o.c].l)}${(!o.tree&&o.a)?' · Lv. '+o.a:''}${(o.d&&dispName(o)!==o.d&&dispName(o)!==opName(o.d))?' · '+esc(o.d):''}</small></span><span class="coord">${o.x}, ${o.y}</span></button>`).join('');
   el.innerHTML=h||'<p class="small muted">Nichts gefunden. Pal-Namen sind englisch, z. B. Anubis.</p>';
   el.querySelectorAll('[data-pal]').forEach(b=>b.addEventListener('click',()=>{ native.tap(); $('q').blur(); showPalSmart(b.dataset.pal); }));
   el.querySelectorAll('[data-id]').forEach(b=>b.addEventListener('click',()=>{ const o=BYID.get(+b.dataset.id); $('q').blur(); sheetTo('peek'); layerOn[o.c]=true; renderChips(); openDetail(o,pts); flyPoint([o.y,o.x],1.5); renderMarkers(); }));
@@ -1456,8 +1465,10 @@ function sheetTo(s,anim=true){
 window.addEventListener('resize',()=>{ sheetTo(sheetState,false); map.invalidateSize(); });
 /* iOS schiebt die Seite beim Fokussieren von Eingabefeldern nach oben – immer zurücksetzen */
 window.addEventListener('scroll',()=>{ if(window.scrollY||window.scrollX) window.scrollTo(0,0); },{passive:true});
-document.addEventListener('focusin',()=>setTimeout(()=>window.scrollTo(0,0),50));
-document.addEventListener('focusout',()=>setTimeout(()=>{ window.scrollTo(0,0); sheetTo(sheetState,false); },80));
+function unscroll(){ if(document.body.scrollTop||document.body.scrollLeft){ document.body.scrollTop=0; document.body.scrollLeft=0; } if(document.documentElement.scrollTop){ document.documentElement.scrollTop=0; } }
+document.body.addEventListener('scroll',unscroll,{passive:true}); document.addEventListener('scroll',e=>{ if(e.target===document||e.target===document.body||e.target===document.documentElement) unscroll(); },{passive:true,capture:true});
+document.addEventListener('focusin',()=>setTimeout(()=>{ window.scrollTo(0,0); unscroll(); },50));
+document.addEventListener('focusout',()=>setTimeout(()=>{ window.scrollTo(0,0); unscroll(); sheetTo(sheetState,false); },80));
 
 /* ---------- Leitfaden / Planer ---------- */
 const FTS=D.m.filter(o=>o.c==='ft');
@@ -1513,9 +1524,10 @@ function planRoute(){
   });
   cand.sort((a,b)=>b.ratio-a.ratio);
   let used=5; const chosen=[];
-  for(const c of cand){ if(used+c.t>budget+4) continue; chosen.push(c); used+=c.t; if(used>=budget) break; }
+  for(const c of cand){ const reserve=3*Math.ceil((chosen.length+1)/6); if(used+c.t+reserve>budget+2) continue; chosen.push(c); used+=c.t; if(used>=budget) break; }
   // Zuerst die Stopps mit EXP- und Fang-Statuen (deren Bonus wirkt auf alles danach), dann nach Gebietslevel
-  const pri=c=>c.lv>L+15?2:c.path.some(o=>o.c==='relax')?0:c.path.some(o=>o.c==='lunaris'||(o.c==='ruin'&&o.op))?1:2;
+  // Mit Flug-Reittier: Relaxaurus/Lunaris immer zuerst (kurz landen, einsammeln, weg), sonst nur im passenden Level
+  const pri=c=>{ const hasR=c.path.some(o=>o.c==='relax'), hasL=c.path.some(o=>o.c==='lunaris'||(o.c==='ruin'&&o.op)); if(c.lv>L+15 && !(fly&&(hasR||hasL))) return 2; return hasR?0:hasL?1:2; };
   chosen.forEach(c=>c.pri=pri(c));
   chosen.sort((a,b)=>(a.pri<2?a.pri:2)-(b.pri<2?b.pri:2) || (a.pri<2&&b.pri<2 ? a.lv-b.lv : Math.floor(a.lv/10)-Math.floor(b.lv/10) || a.lv-b.lv));
   return {L,budget,fly,chosen,used};
@@ -1637,7 +1649,7 @@ function renderPlan(){
   const rest=steps.slice(0,total).reduce((m,s,i)=>m+(stepIsDone(s,i,plan)?0:(s.mins||0)),0);
   document.getElementById('prog').innerHTML=`<div class="progtop"><span><b>Level ${plan.L}</b> · ${doneN} von ${total} Schritten erledigt</span><span class="mins">noch ca. ${rest} Min.</span></div><div class="bar"><i style="width:${total?Math.round(doneN/total*100):0}%"></i></div>`;
   const step=steps[cur], hd=stepHead(step,cur,plan), tasks=stepTasks(step,cur,plan);
-  let h=`<article class="stepcard"><div class="eyebrow">${step.k==='next'?'Geschafft':'Schritt '+(cur+1)+' von '+total}${step.mins?' · ca. '+step.mins+' Min.':''}</div><h3 class="steptitle">${hd.title}</h3><div class="stepsub">${hd.sub}</div>`;
+  let h=`<article class="stepcard"><div class="eyebrow">${step.k==='next'?'Geschafft':'Was jetzt? · Schritt '+(cur+1)+' von '+total}${step.mins?' · ca. '+step.mins+' Min.':''}</div><h3 class="steptitle">${hd.title}</h3><div class="stepsub">${hd.sub}</div>`;
   if(hd.warn) h+=`<div class="warn">${hd.warn}</div>`;
   if(step.k==='hub') h+=`<p class="small muted" style="margin:10px 0 0">Reise per Schnellreise hin. Noch nicht freigeschaltet? Dann hinfliegen und die Statue unterwegs aktivieren. Danach in dieser Reihenfolge:</p>`;
   if(tasks.length){
@@ -1656,8 +1668,8 @@ function renderPlan(){
   h+='</div></article>';
   document.getElementById('cur').innerHTML=h;
   const nx=steps.findIndex((s,i)=>i>cur&&!stepIsDone(s,i,plan));
-  document.getElementById('nextup').innerHTML = (nx>=0 && steps[nx].k!=='next') ? `<div class="nextup"><span class="eyebrow">Danach</span> ${stepHead(steps[nx],nx,plan).title}${steps[nx].k==='hub'?` · ${steps[nx].items.length} Aufgaben`:''}</div>` : '';
-  document.getElementById('allsteps').innerHTML=steps.map((s,i)=>{ const d=stepIsDone(s,i,plan); const hh=stepHead(s,i,plan); return `<li class="${d?'done':''}${i===cur?' now':''}"><button class="linkbtn" data-goto="${i}">${hh.title}</button>${s.k==='hub'?` <span class="muted small">${s.items.length} Aufgaben</span>`:''}${d?` <button class="linkbtn small" data-undo="${i}">zurücknehmen</button>`:''}</li>`; }).join('');
+  document.getElementById('nextup').innerHTML = (nx>=0 && steps[nx].k!=='next') ? `<div class="nextup"><span class="eyebrow">Danach</span> ${stepHead(steps[nx],nx,plan).title}${steps[nx].k==='hub'?` · ${steps[nx].items.length} ${steps[nx].items.length===1?'Aufgabe':'Aufgaben'}`:''}</div>` : '';
+  document.getElementById('allsteps').innerHTML=steps.map((s,i)=>{ const d=stepIsDone(s,i,plan); const hh=stepHead(s,i,plan); return `<li class="${d?'done':''}${i===cur?' now':''}"><button class="linkbtn" data-goto="${i}">${hh.title}</button>${s.k==='hub'?` <span class="muted small">${s.items.length} ${s.items.length===1?'Aufgabe':'Aufgaben'}</span>`:''}${d?` <button class="linkbtn small" data-undo="${i}">zurücknehmen</button>`:''}</li>`; }).join('');
   // Karte: alle Stopps klein, aktueller Schritt groß
   steps.forEach((s,i)=>{
     if(s.k!=='hub') return; const f=BYID.get(s.ft); const isCur=i===cur, d=stepIsDone(s,i,plan);
@@ -1715,7 +1727,7 @@ function guideHtml(){
 <ol class="steps">
 <li><b>Weltoptionen öffnen</b> (Hauptmenü → Welt auswählen → Welteinstellungen ändern). EXP-Rate (bis 20×), Fangrate, Drop-Rate und Brutzeit der Eier lassen sich dort jederzeit ändern. Auf der PS5 ist das der einzige legale „Cheat“.</li>
 <li><b>Die 4 Relaxaurus-Statuen so früh wie möglich.</b> Dauerhaft +50 % EXP. Sie liegen in Gebieten ab etwa Lv. 35. Mit Flug-Reittier trotzdem früh holbar: landen, einsammeln, sofort wieder abheben.</li>
-<li><b>Die 4 Lunaris-Statuen.</b> Kugeln suchen ihr Ziel selbst. (Patch 1.0.4 hat den Wert etwas angepasst, sie lohnen sich weiterhin.)</li>
+<li><b>Die 4 Lunaris-Statuen.</b> Kugeln suchen ihr Ziel selbst. (Patch 1.0.4 hat die Zielsuche-Stärke angepasst, sie lohnen sich weiterhin.)</li>
 <li><b>Pal Tamer's Glasses holen</b> <span class="coord">8, 121</span>: Hack-Terminal. Damit tötest du beim Schwächen keinen Pal mehr, jeder Kampf endet fangbereit.</li>
 <li><b>Lifmunk-Statuen unterwegs mitnehmen.</b> 100 von 155 reichen.</li>
 <li><b>Jede neue Pal-Art 5× fangen.</b> Volle Fangboni (seit 1.0 schon nach 5 statt 12) und Mimog-Statuen für Laufgeschwindigkeit.</li>
@@ -1783,7 +1795,7 @@ ${tower.map(o=>`<tr><td>${esc(o.n)}</td><td><span class="coord">${o.x}, ${o.y}</
 </ul>
 
 <h2>Glitches und Tricks für PS5 (Stand 1.0.5)</h2>
-<p class="small muted">Tippe auf einen Trick für die Anleitung. Alles hier funktioniert mit Controller. Die Patches 1.0.4 und 1.0.5 haben keinen dieser Tricks behoben. Die Anleitungen stammen aus aktuellen Guides, ich konnte sie nicht selbst auf der PS5 testen.</p>
+<p class="small muted">Tippe auf einen Trick für die Anleitung. Alles hier funktioniert mit Controller. 1.0.5 (15. 9. 2026) ist der aktuelle Patch und hat nur Texturen und Kartenfilter repariert, 1.0.4 keinen dieser Tricks. Geprüft am 13. 11. 2026 gegen palworld-db und Game8. Auf der PS5 nicht selbst getestet. Auf Servern mit Timing-Tricks vorsichtig.</p>
 <div class="glist">
 <details class="gl"><summary><span class="gname">Moonflower-EXP-Schleife</span>${W}</summary><p class="gwhy">Bester EXP-Farm im Spiel, ab etwa Lv. 55.</p><p><b>Du brauchst:</b> ein Flug-Reittier mit Meteorregen (Jetragon lernt ihn mit Lv. 60).</p><ol class="steps"><li>Schnellreise zu „Moonflower Tower Entrance“ <button class="chipbtn" data-go="-602,214,0"><span class="coord">-602, 214</span></button> auf Sakurajima.</li><li>Zum kleinen Ninja-Dorf neben dem Turm fliegen.</li><li>In der Luft über dem Dorf bleiben und mit dem Reittier Meteorregen einsetzen. Die meisten Gegner fallen mit einem Treffer.</li><li>Ein Stück wegfliegen und etwa 30 Sekunden warten.</li><li>Zurück: Alle Ninjas sind wieder da. Wiederholen.</li></ol><p class="small muted">Keine Fahndung, weil die Ninjas feindlich sind.</p></details>
 <details class="gl"><summary><span class="gname">Turmboss-Rematch</span>${W}</summary><p class="gwhy">Schneller EXP-Schub im späten Spiel, auch für schwache Pals im Team.</p><ol class="steps"><li>Einen Turmboss einmal besiegen.</li><li>Zum Turm zurück und den Kampf erneut starten. Es gibt keine Wartezeit.</li><li>Einen niedrigen Pal ins Team nehmen: Er bekommt nach dem Sieg sehr viele Level.</li></ol><p class="small muted">Das ist eine normale Spielfunktion, also sicher.</p></details>
@@ -1797,7 +1809,10 @@ ${tower.map(o=>`<tr><td>${esc(o.n)}</td><td><span class="coord">${o.x}, ${o.y}</
 <details class="gl"><summary><span class="gname">Kugel-Katapult</span>${W}</summary><p class="gwhy">Hohe Sprünge an Stellen, wo du sonst nicht hochkommst.</p><ol class="steps"><li>Eine Kugel auf einen Pal werfen, der sicher gefangen wird (schwach, niedriges Level).</li><li>Auf die Kugel springen, während sie den Fang abschließt.</li><li>Bei Erfolg schleudert sie dich hoch. Die Richtung kannst du nicht steuern.</li></ol></details>
 <details class="gl"><summary><span class="gname">Sweepa-Boost stapeln</span>${W}</summary><p class="gwhy">Sweepa wird stärker als normal erlaubt.</p><ol class="steps"><li>Von Sweepa absteigen.</li><li>Einen Swee fallen lassen und wieder aufheben.</li><li>Der Buff stapelt sich, statt sich nur zu erneuern. Mehrmals wiederholen.</li></ol></details>
 <details class="gl"><summary><span class="gname">Seltene Händler würfeln</span>${W}</summary><p class="gwhy">Den Händler mit dem Angebot bekommen, das du willst.</p><ol class="steps"><li>An einer neuen Stelle eine Palbox bauen (neue Basis).</li><li>Warten, bis ein Besucher kommt.</li><li>Falscher Händler? Basis abreißen, neu bauen, wiederholen.</li></ol></details>
-<details class="gl"><summary><span class="gname">Fähigkeitsfrucht-Bäume neu laden</span>${W}</summary><p class="gwhy">Mehr Früchte, andere Attacken.</p><ol class="steps"><li>Baum abernten.</li><li>Weit wegfliegen, bis das Gebiet nicht mehr geladen ist.</li><li>Zurückkommen: Der Baum hat neue Früchte.</li></ol></details>
+<details class="gl"><summary><span class="gname">Fähigkeitsfrucht-Bäume schneller</span>${W}</summary><p class="gwhy">Mehr Früchte, andere Attacken. Kein Glitch, eine Welteinstellung.</p><ol class="steps"><li>Bäume respawnen von selbst, nach etwa 5 Stunden Spielzeit (zufällige Früchte).</li><li>Schneller: Hauptmenü → Welt → Welteinstellungen → „Respawn-Intervall für sammelbare Objekte“ auf den kleinsten Wert.</li><li>Dann die 31 Bäume auf der Karte abfliegen (Ebene „Fähigkeitsfrucht-Baum“).</li></ol></details>
+<details class="gl"><summary><span class="gname">Syndikat-Lager unendlich</span>${W}</summary><p class="gwhy">Kugeln, Gold, Munition und EXP beliebig oft, ab dem frühen Spiel.</p><ol class="steps"><li>Ein Syndikat-Lager suchen (runder Aufbau mit Käfig-Pal in der Mitte, Rauch vom Lagerfeuer).</li><li>Alle Menschen besiegen, aber <b>einen übrig lassen</b>. Lieber selbst kämpfen, Pals erledigen sonst alle.</li><li>Hauptmenü → „Zurück zum Titel“ (speichert), Spielstand neu laden.</li><li>Die Gegner stehen wieder da. Wiederholen.</li></ol><p class="small muted">Der Käfig-Pal kommt nicht wieder. Keine Fahndung, weil Syndikat-Leute feindlich sind.</p></details>
+<details class="gl"><summary><span class="gname">Frieren + Raketenwerfer</span>${W}</summary><p class="gwhy">Eingefrorene Gegner fliegen beim Treffer weg, auch starke.</p><ol class="steps"><li>Gegner mit einer Eis-Attacke einfrieren (z. B. Crystal Breath).</li><li>Solange er steht, mit dem Raketenwerfer treffen.</li></ol></details>
+<details class="gl"><summary><span class="gname">Zwei Kampf-Pals gleichzeitig</span>${W}</summary><p class="gwhy">Doppelter Schaden bei Bossen, hält bis zum Beenden des Spiels.</p><ol class="steps"><li>Kampf-Pal rufen.</li><li>Ein Reittier aufrufen, aufsteigen, absteigen.</li><li>Einen dritten Pal rufen: Jetzt kämpfen zwei Pals nebeneinander.</li></ol><p class="small muted">Nach dem Schließen des Spiels ist es wieder normal.</p></details>
 <details class="gl"><summary><span class="gname">Riesen-Pal-Bug</span>${Z}</summary><p>Beim Hochheben und Absetzen eines Pals wird er manchmal rund 200× größer, und alle in der Welt sehen ihn. Es gibt kein festes Rezept: Einfach oft Pals hochheben und absetzen. Lustig für Screenshots.</p></details>
 <details class="gl"><summary><span class="gname">Gewicht ziehen</span>${PC}</summary><p>Funktioniert nur mit Maus und Tastatur am PC, nicht auf der PS5.</p></details>
 <details class="gl"><summary><span class="gname">Duplizieren (Holzpfeiler)</span>${P}</summary><p>Mit Patch 1.0.3 behoben. Videos mit „geht noch“ sind älter als der Patch.</p></details>
@@ -1897,7 +1912,7 @@ function itemsHtml(){
     ['Felbat','Dunkel','Lebensraub für Pal und dich, früh aus Dungeons.'],
   ];
   const EARLY=[['Foxparks','Feuer','Wird zum Flammenwerfer in deiner Hand. Trägt dich durchs Startgebiet.'],['Direhowl','Neutral · Reittier','Schnelles erstes Reittier (Lv. 5–15).'],['Vanwyrm','Feuer/Dunkel · Flug','Das erste zuverlässige Flug-Reittier (ca. Lv. 21–25).'],['Incineram','Feuer/Dunkel','Stark von Lv. 22 bis Mitte 30.']];
-  const tbl=(rows)=>`<div class="tablewrap"><table><thead><tr><th>Pal</th><th>Warum</th><th>Wo</th></tr></thead><tbody>${rows.map(([n,el,w])=>`<tr><td><b>${n}</b><br><span class="muted small">${el}</span></td><td>${w}</td><td>${whereBtn(n)}</td></tr>`).join('')}</tbody></table></div>`;
+  const tbl=(rows)=>`<div class="palcards">${rows.map(([n,el,w])=>`<div class="palcard"><div class="pn"><b>${n}</b><span>${el}</span></div><div class="pw">${w}</div><div class="pl">${whereBtn(n)}</div></div>`).join('')}</div>`;
   h+=`<h2>Die besten Pals</h2><p class="small muted">Nach aktuellen 1.0-Ranglisten. „Alpha“ springt zum festen Boss-Spawn, „Wilde Spawns“ zeigt, wo die Art frei herumläuft. Namen auf Englisch, wie im Datenbestand.</p><h3>Anfang (Lv. 1–25)</h3>${tbl(EARLY)}<h3>Stärkste Pals im Spiel</h3>${tbl(COMBAT)}
   <p class="small muted">Weitere Top-Pals ohne festen Fundort: Bellanoir (Raid-Boss, Beschwörungsaltar), Shaolong, Bastigor, Dandilord und die Ignis-/Ryu-Varianten bekommst du über Zucht oder Raids.</p>`;
 
@@ -1918,7 +1933,7 @@ function itemsHtml(){
   <tr><td><b>Prototyp-Schrotflinte</b></td><td>69</td><td>Antike Werkbank: 40 Kohlefaser, 5 Thermokerne, 60 Soralit-Barren, 5 KI-Kerne. Baupläne wie beim Bogen.</td></tr>
   <tr><td><b>Plasma-Gewehr</b></td><td>78</td><td>Antike Werkbank, Paloxit-Barren (nur im Weltbaum abbaubar). Bester Allrounder, Blitze springen zwischen Gegnern. Legendärer Bauplan: Saya & Selyne im Hard Mode.</td></tr>
   <tr><td><b>Strahlenwerfer</b> (Beam Launcher)</td><td>80</td><td>Höchster Flächenschaden. 100 Paloxit-Barren, 10 Antike Zivilisationskerne. Legendär: Auri & Shaolong im Hard Mode.</td></tr>
-  <tr><td><b>Jetragon-Raketenwerfer</b></td><td>79</td><td>Jetragon zuerst fangen (Sunreach, <span class="coord">-553, -1332</span>).</td></tr>
+  <tr><td><b>Jetragon-Raketenwerfer</b></td><td>70</td><td>Seit 1.0.3 ab Lv. 70 statt 79, Sattel billiger. Jetragon zuerst fangen (Sunreach, <span class="coord">-553, -1332</span>).</td></tr>
   <tr><td><b>Lily's Spear (verstärkt)</b></td><td>68</td><td>Bauplan beim Medaillen-Händler gegen Dog Coins. Gute Nahkampf-Option.</td></tr>
   </tbody></table></div>
   <p class="small muted">Quellen: Ranglisten von <a href="https://game8.co/games/Palworld/archives/440279" target="_blank" rel="noopener">Game8</a>, <a href="https://pindrop.gg/palworld/guides/best-combat-pals" target="_blank" rel="noopener">PinDrop</a>, <a href="https://nexttier.pro/guide/palworld-best-weapons-tier-list" target="_blank" rel="noopener">NextTier</a>, <a href="https://gameshorizon.com/guides/palworld-1-0-best-end-game-weapons-tier-list-how-to-get/" target="_blank" rel="noopener">GamesHorizon</a>. Items: <a href="https://allthings.how/palworld-1-0-how-to-max-out-any-pal-with-every-power-item/" target="_blank" rel="noopener">allthings.how (Pal-Verbesserung)</a>, <a href="https://allthings.how/palworld-1-0-how-to-get-and-use-dog-coins/" target="_blank" rel="noopener">allthings.how (Dog Coins)</a>, <a href="https://howtoplayhub.com/palworld/skill-fruits-guide" target="_blank" rel="noopener">HowToPlayHub (Fähigkeitsfrüchte)</a>.</p>`;
