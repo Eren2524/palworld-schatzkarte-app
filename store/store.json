@@ -10,7 +10,7 @@
   "featuredApps": ["com.eren2524.palkarte"],
   "apps": [
     {
-      "name": "Schatzkarte",
+      "name": "Palverse",
       "bundleIdentifier": "com.eren2524.palkarte",
       "repo": "Eren2524/palworld-schatzkarte-app",
       "tagPrefix": "schatzkarte-v",

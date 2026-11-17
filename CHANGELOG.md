@@ -6,6 +6,10 @@ Neuer Eintrag = neues Update im Store: Version in `project.yml` (`MARKETING_VERS
 
 - Testversion aus dem Beta-Kanal.
 
+## 3.4
+- Neuer Name: Palverse
+- Neues App-Icon: eigenes Fellwesen auf einer Inselwelt mit Route und Stern-Pin
+
 ## 3.3
 - Neu: „Übrigens, hier in der Nähe“ – tippst du einen Punkt auf der Karte an (auch Plan-Aufgaben), zeigt die Karte bis zu 5 lohnende Sachen im Umkreis: was es ist, was es dir bringt, wie weit und in welcher Richtung, mit Warnung bei zu hohem Level
 - Antippen eines Tipps springt direkt dorthin, dazu die nächste Schnellreise
