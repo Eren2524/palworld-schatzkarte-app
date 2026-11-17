@@ -6,6 +6,9 @@ Neuer Eintrag = neues Update im Store: Version in `project.yml` (`MARKETING_VERS
 
 - Testversion aus dem Beta-Kanal.
 
+## 3.5
+- Neues App-Icon: leuchtender Weltenbaum bei Nacht mit Geisterfuchs und Palverse-Schriftzug
+
 ## 3.4
 - Neuer Name: Palverse
 - Neues App-Icon: eigenes Fellwesen auf einer Inselwelt mit Route und Stern-Pin
