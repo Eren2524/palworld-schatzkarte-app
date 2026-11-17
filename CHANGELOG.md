@@ -6,6 +6,11 @@ Neuer Eintrag = neues Update im Store: Version in `project.yml` (`MARKETING_VERS
 
 - Testversion aus dem Beta-Kanal.
 
+## 3.3
+- Neu: „Übrigens, hier in der Nähe“ – tippst du einen Punkt auf der Karte an (auch Plan-Aufgaben), zeigt die Karte bis zu 5 lohnende Sachen im Umkreis: was es ist, was es dir bringt, wie weit und in welcher Richtung, mit Warnung bei zu hohem Level
+- Antippen eines Tipps springt direkt dorthin, dazu die nächste Schnellreise
+- Detailkarte scrollt und verdeckt nicht mehr die ganze Karte
+
 ## 3.2
 - Neu: Level-Prognose beim Plan. Du siehst vorher, welches Level du in 1, 2 oder 3 Stunden etwa erreichst und ob sich die Runde lohnt
 - Neue Einstellung „EXP-Rate deiner Welt“ für die Prognose, Ziel-Level steht oben im laufenden Plan

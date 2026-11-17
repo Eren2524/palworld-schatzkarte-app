@@ -962,6 +962,22 @@ details.icard .btn{margin-top:12px}
 .chips{-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}
 #pane-guide a[href],#pane-items a[href]{display:inline-block;padding:12px 2px;margin:-12px 0}
 .chip.seg{padding:0 2px;align-items:center}.chip.seg button{min-height:44px;padding:0 14px}
+
+#dbody{max-height:min(44dvh, calc(100dvh - var(--sheetvis) - var(--sat) - 90px));overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;margin:-4px -6px -4px 0;padding:4px 6px 4px 0}
+.near{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.neareye{font:700 11px var(--f-body);text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:6px}
+.nearnone{font-size:13.5px;color:var(--muted);margin:4px 0}
+.nearlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.nearbtn{appearance:none;width:100%;min-height:52px;display:flex;align-items:center;gap:10px;text-align:left;border:1px solid var(--line);background:rgba(255,255,255,.03);border-radius:14px;padding:8px 10px;color:var(--ink);font:inherit;cursor:pointer}
+.nearbtn:active{background:rgba(25,211,255,.1)}
+.nearbtn .nd{flex:none;width:10px;height:10px;border-radius:50%;background:var(--c);box-shadow:0 0 8px var(--c)}
+.nearbtn .nt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.nearbtn .nn{font-size:14.5px;font-weight:600;line-height:1.3}
+.nearbtn .nw{font-size:13px;color:var(--muted);line-height:1.35}
+.nearbtn .nm{font-size:12px;color:var(--accent);line-height:1.3}
+.nearbtn .nwarn{color:var(--bad)}
+.nearbtn .nchev{flex:none;color:var(--muted);font-size:20px}
+.nearft{font-size:13px;color:var(--muted);margin:10px 0 0}
 </style></head>
 <body>
 <div id="map" aria-label="Karte von Palpagos"></div>
@@ -1301,6 +1317,27 @@ function showSel(o){
   selLayer.clearLayers();
   L.marker([o.y,o.x],{icon:L.divIcon({className:'',html:'<div class="sel-pulse"></div>',iconSize:[34,34],iconAnchor:[17,17]}),interactive:false,zIndexOffset:200}).addTo(selLayer);
 }
+
+/* ---------- In der Nähe: Tipps zum angetippten Punkt ---------- */
+const NEAR_R=160;
+function nearbyOf(o){
+  return D.m.filter(p=>p!==o && !!p.tree===!!o.tree && !done.has(p.i) && CATS[p.c] && CATS[p.c].w>0 && p.c!=='ft' && p.c!=='start' && p.c!=='statue')
+    .map(p=>({p,d:Math.hypot(p.x-o.x,p.y-o.y)})).filter(x=>x.d<=NEAR_R && x.d>0.5)
+    .sort((a,b)=>(weight(b.p)/(b.d+40))-(weight(a.p)/(a.d+40))).slice(0,5);
+}
+function nearFT(o){ let best=null,bd=1e9; FTS.forEach(f=>{ if(!!f.tree!==!!o.tree) return; const d=Math.hypot(f.x-o.x,f.y-o.y); if(d<bd){bd=d;best=f;} }); return best&&bd<400?{f:best,d:bd}:null; }
+function dirOf(o,p){ const dx=p.x-o.x, dy=p.y-o.y; const a=Math.atan2(dx,dy)*180/Math.PI; const D8=['Norden','Nordosten','Osten','Südosten','Süden','Südwesten','Westen','Nordwesten']; return D8[Math.round(((a+360)%360)/45)%8]; }
+function distTxt(d){ return d<40?'direkt daneben':d<90?'ganz nah':'etwas weiter'; }
+function nearHtml(o){
+  const list=nearbyOf(o); const myL=(prefs.plan&&prefs.plan.L)||+lvlEl.value||0;
+  const ft=(o.c!=='ft')?nearFT(o):null;
+  let h='<div class="near"><div class="neareye">Übrigens, hier in der Nähe</div>';
+  if(!list.length) h+='<p class="nearnone">Im Umkreis gibt es nichts weiteres Wichtiges, das du noch nicht hast.</p>';
+  else h+='<ul class="nearlist">'+list.map(({p,d})=>{ const t=taskOf(p); const warn=(p.l&&p.l>myL+3)||(!p.l&&p.a&&p.a>myL+8);
+    return `<li><button class="nearbtn" data-near="${p.i}" style="--c:${CATS[p.c].col}"><span class="nd"></span><span class="nt"><span class="nn">${t.t}</span><span class="nw">${t.why}</span><span class="nm">${distTxt(d)} · Richtung ${dirOf(o,p)}${warn?` · <b class="nwarn">Lv. ${p.l||p.a}, Vorsicht</b>`:''}</span></span><span class="nchev">›</span></button></li>`; }).join('')+'</ul>';
+  if(ft) h+=`<p class="nearft">Nächste Schnellreise: <b>${esc(ft.f.n)}</b> <span class="coord">${ft.f.x}, ${ft.f.y}</span></p>`;
+  return h+'</div>';
+}
 function openDetail(o,list){
   if(list){ detailList=list; detailIdx=list.indexOf(o); } else if(!detailList||!detailList.includes(o)){ detailList=null; }
   selected=o.i; showSel(o); native.tap();
@@ -1315,6 +1352,7 @@ function openDetail(o,list){
   if(o.r) h+=`<div class="row">Respawn: ${esc(o.r)}</div>`;
   if(o.snap) h+=`<div class="row"><a href="${o.snap}" target="_blank" rel="noopener">Foto vom Fundort (paldb)</a></div>`;
   if(o.h) h+=`<div class="row"><a href="https://paldb.cc/en/${encodeURI(decodeURI(o.h))}" target="_blank" rel="noopener">Text auf paldb lesen</a></div>`;
+  h+=nearHtml(o);
   h+=`<div class="btnrow">`;
   if(o.c!=='ft' && o.c!=='start') h+=`<button class="btn ${isDone?'done':'primary'}" id="dtoggle">${isDone?'<span class="pop">✓</span> Gesammelt':'Abhaken'}</button>`;
   h+=`<button class="btn" id="dcenter">Zentrieren</button>`;
@@ -1324,6 +1362,8 @@ function openDetail(o,list){
   const d=$('detail'); $('dbody').innerHTML=h; d.style.setProperty('--c',c.col); d.hidden=false; requestAnimationFrame(()=>d.classList.add('show'));
   if($('dtoggle')) $('dtoggle').addEventListener('click',()=>{ toggleDone(o.i); openDetail(o); });
   $('dcenter').addEventListener('click',()=>{ native.tap(); flyPoint([o.y,o.x],Math.max(map.getZoom(),1)); });
+  $('dbody').querySelectorAll('[data-near]').forEach(b=>b.addEventListener('click',()=>{ const p=BYID.get(+b.dataset.near); if(!p) return; layerOn[p.c]=true; renderChips(); openDetail(p); flyPoint([p.y,p.x],Math.max(map.getZoom(),1.25)); renderMarkers(); }));
+  $('dbody').scrollTop=0;
   if($('dprev')) $('dprev').addEventListener('click',()=>stepDetail(-1));
   if($('dnext')) $('dnext').addEventListener('click',()=>stepDetail(1));
   if(sheetState==='full') sheetTo('peek');
