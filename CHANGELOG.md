@@ -6,6 +6,13 @@ Neuer Eintrag = neues Update im Store: Version in `project.yml` (`MARKETING_VERS
 
 - Testversion aus dem Beta-Kanal.
 
+## 3.2
+- Neu: Level-Prognose beim Plan. Du siehst vorher, welches Level du in 1, 2 oder 3 Stunden etwa erreichst und ob sich die Runde lohnt
+- Neue Einstellung „EXP-Rate deiner Welt“ für die Prognose, Ziel-Level steht oben im laufenden Plan
+- Bottom-Sheet: Hochwischen im Inhalt zieht das Blatt jetzt auf volle Höhe (wie in Apple Karten)
+- Alle Tippflächen mindestens 44 pt: Welt-Umschalter, Koordinaten-Knöpfe, Quellen-Links
+- Filterleiste blendet rechts aus, damit man sieht, dass sie weiterwischt; Tabellen nicht mehr 4 px abgeschnitten
+
 ## 3.1
 - Plan: Relaxaurus- und Lunaris-Statuen kommen mit Flug-Reittier immer zuerst, Zeitplan bleibt im gewählten Budget, „Was jetzt?“ steht oben
 - Kein Hochrutschen der Seite mehr beim Tippen auf Buttons und Eingabefelder (Kopfzeile verschwand)

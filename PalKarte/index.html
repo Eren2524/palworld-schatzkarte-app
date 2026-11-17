@@ -940,6 +940,28 @@ details.icard .btn{margin-top:12px}
   body.detail-open .readout,body.detail-open .legend,body.sheet-full .readout,body.sheet-full .legend,body.sheet-full .chips,body.sheet-full .topbar{opacity:1;pointer-events:auto}
 }
 
+
+/* 3.2: Prognose + Tippflächen */
+.xpf{margin-top:12px}
+.fc{margin-top:14px;padding:16px;border-radius:18px;border:1px solid rgba(255,197,61,.35);background:linear-gradient(160deg,rgba(255,197,61,.12),rgba(25,211,255,.06));}
+.fc .fceye{font:700 11px var(--f-body);text-transform:uppercase;letter-spacing:.1em;color:var(--gold)}
+.fc .fcbig{font:800 30px/1.1 var(--f-body);margin:6px 0 2px;color:var(--ink)}
+.fc .fcbig small{font-size:15px;font-weight:700;color:var(--muted)}
+.fc .fcverd{margin:8px 0 0;font-size:15px;line-height:1.45}
+.fc .fcverd b.ok{color:var(--good)} .fc .fcverd b.meh{color:var(--gold)}
+.fc .fcrows{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.fc .fcr{border-radius:12px;background:rgba(0,0,0,.25);padding:10px 8px;text-align:center;border:1px solid var(--line)}
+.fc .fcr.sel{border-color:var(--gold);box-shadow:0 0 12px rgba(255,197,61,.25)}
+.fc .fcr b{display:block;font:800 18px var(--f-body)} .fc .fcr span{font-size:12px;color:var(--muted)}
+.fc .fcboost{margin:10px 0 0;font-size:13.5px;color:var(--muted);line-height:1.45}
+.fc .fcnote{margin:8px 0 0;font-size:11.5px;color:var(--muted);opacity:.8;line-height:1.4}
+.progfc{margin-top:8px;font-size:13.5px;color:var(--muted)} .progfc b{color:var(--gold)}
+.seg button{min-height:44px}
+.chipbtn{min-height:44px}
+.tablewrap{margin:6px 0}
+.chips{-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}
+#pane-guide a[href],#pane-items a[href]{display:inline-block;padding:12px 2px;margin:-12px 0}
+.chip.seg{padding:0 2px;align-items:center}.chip.seg button{min-height:44px;padding:0 14px}
 </style></head>
 <body>
 <div id="map" aria-label="Karte von Palpagos"></div>
@@ -998,7 +1020,10 @@ details.icard .btn{margin-top:12px}
           <div class="field"><label>Reittier</label>
             <label class="pill" style="justify-content:center;padding:10px"><input type="checkbox" id="fly" checked> Ich kann fliegen</label></div>
         </div>
-        <details class="fine"><summary>Was soll in den Plan?</summary><div class="checks" id="goals" style="margin-top:8px"></div></details>
+        <div class="field xpf"><label for="xprate">EXP-Rate deiner Welt</label>
+              <select id="xprate"><option value="1" selected>1× (Standard)</option><option value="1.5">1,5×</option><option value="2">2×</option><option value="3">3×</option><option value="5">5×</option><option value="10">10×</option></select></div>
+          <div id="forecast" class="fc" aria-live="polite"></div>
+          <details class="fine"><summary>Was soll in den Plan?</summary><div class="checks" id="goals" style="margin-top:8px"></div></details>
         <div class="btnrow" style="margin-top:16px">
           <button class="btn primary big" id="makePlan">Plan erstellen →</button>
           <button class="btn big" id="cancelNew" hidden>Zurück zum Plan</button>
@@ -1447,7 +1472,7 @@ function sheetTo(s,anim=true){
   let startY=0,startT=0,baseY=0,dragging=false,lastY=0,lastT=0,vel=0,fromBody=false;
   function onStart(e){ if(isWide()) return; const t=e.touches?e.touches[0]:e; startY=lastY=t.clientY; startT=lastT=Date.now(); baseY=sheetY; dragging=true; vel=0; sheet.classList.remove('anim'); }
   function onMove(e){ if(!dragging) return; const t=e.touches?e.touches[0]:e; const dy=t.clientY-startY;
-    if(fromBody){ if(sheetBody.scrollTop>0 || dy<0){ dragging=false; return; } }
+    if(fromBody){ if(sheetBody.scrollTop>0 || (dy<0 && sheetState==='full')){ dragging=false; return; } }
     const now=Date.now(); vel=(t.clientY-lastY)/Math.max(1,now-lastT); lastY=t.clientY; lastT=now;
     let y=baseY+dy; const minY=snapY('full'), maxY=snapY('peek'); if(y<minY) y=minY-(minY-y)*.25; if(y>maxY) y=maxY+(y-maxY)*.25;
     applyY(y,false); if(e.cancelable) e.preventDefault(); }
@@ -1533,6 +1558,46 @@ function planRoute(){
   return {L,budget,fly,chosen,used};
 }
 
+
+/* ---------- Level-Prognose (EXP-Tabelle 1.0, palworld.wiki.gg) ---------- */
+const XPT=[0,50,200,400,740,1260,1960,2860,4010,5510,7410,9810,12810,16610,21287,26640,32500,38867,47431,56840,68784,81573,97404,115094,136164,158924,185064,212894,242414,273624,308170,346399,388694,435477,487215,544422,607667,677577,754844,840233,934588,1038842,1154024,1281269,1421830,1577090,1748577,1937977,2147151,2378134,2633193,2914828,3225800,3569156,3947260,4364833,4824976,5331215,5887550,6498533,7169350,7905913,8714987,9604263,10582213,11658031,12845734,14156947,15604507,17202587,18966831,20914510,23064692,25438426,28058950,30951910,34145608,37671270,41563358,45859908];
+const XPW=[]; let XPS=0; for(let l=1;l<80;l++){ XPW[l]=Math.pow(XPT[l]-XPT[l-1],.25); XPS+=XPW[l]; }
+// Modell: Fang-Bonus wächst mit dem Level mit, darum dauert jedes Level ähnlich lang. Geeicht auf 20–30 Std. von 1 bis 80 bei 1×.
+function lvAfter(L,hours,tot,mult){ let x=L, h=hours*mult; while(h>0&&x<80){ const li=Math.floor(x), hp=XPW[li]*tot/XPS, rem=(1-(x-li))*hp; if(h>=rem){ h-=rem; x=li+1; } else { x+=h/hp; h=0; } } return Math.min(80,x); }
+function forecast(L,mins,fly,rate,P){
+  const relaxHave=D.m.filter(o=>o.c==='relax'&&done.has(o.i)).length;
+  const inPlan=P?P.chosen.reduce((n,c)=>n+c.path.filter(o=>o.c==='relax').length,0):0;
+  const towers=P?P.chosen.reduce((n,c)=>n+c.path.filter(o=>o.c==='tower').length,0):0;
+  const alphas=P?P.chosen.reduce((n,c)=>n+c.path.filter(o=>o.c==='alpha').length,0):0;
+  const m=(1+.125*relaxHave)*(1+.04*inPlan)*(fly?1:.8)*(.5+.5*rate); // Fang-Bonus ignoriert die EXP-Rate
+  const f=h=>({lo:lvAfter(L,h,36,m),mid:lvAfter(L,h,30,m),hi:lvAfter(L,h,22,m)});
+  return {L,mins,now:f(mins/60),h1:f(1),h2:f(2),h3:f(3),inPlan,towers,alphas,relaxHave};
+}
+const fl=x=>Math.floor(x+1e-6);
+function fcHtml(F){
+  const g=F.now.mid-F.L, hrs=(F.mins/60).toLocaleString('de-DE');
+  let verd;
+  if(F.L>=80) verd='<b class="meh">Du bist schon auf dem Maximallevel 80.</b> Der Plan lohnt sich trotzdem für Beute, Statuen und Pal-EXP.';
+  else if(g>=1) verd=`<b class="ok">Lohnt sich: etwa +${fl(g)===0?1:fl(g)} Level</b> in ${hrs} Std.`+(F.h1.mid-F.L>=1?` Schon nach 1 Std. bist du ungefähr auf Lv. ${fl(F.h1.mid)}.`:'');
+  else verd=`<b class="meh">Knapp unter 1 Level</b> in ${hrs} Std. Ab hier wird jedes Level teuer. Mehr bringen Turm-Rematches, die Moonflower-Farm oder eine höhere EXP-Rate.`;
+  const boost=[]; if(F.inPlan) boost.push(`${F.inPlan} Relaxaurus-Statue${F.inPlan>1?'n':''} (+${F.inPlan*12.5} % EXP danach)`); if(F.towers) boost.push(`${F.towers} Turmboss${F.towers>1?'e':''}`); if(F.alphas) boost.push(`${F.alphas} Alpha-Pal${F.alphas>1?'s':''}`);
+  const sel=F.mins<=90?1:F.mins<=150?2:3;
+  const row=(h,o)=>`<div class="fcr${h===sel?' sel':''}"><b>Lv. ${fl(o.mid)}</b><span>${h} Std.</span></div>`;
+  return `<div class="fceye">Prognose · mit diesem Plan</div>
+   <div class="fcbig">Lv. ${F.L} → ${fl(F.now.mid)} <small>(${fl(F.now.lo)}–${fl(F.now.hi)})</small></div>
+   <p class="fcverd">${verd}</p>
+   <div class="fcrows">${row(1,F.h1)}${row(2,F.h2)}${row(3,F.h3)}</div>
+   ${boost.length?`<p class="fcboost">Größter Schub im Plan: ${boost.join(', ')}. Dazu jede neue Pal-Art 5× fangen.</p>`:''}
+   <p class="fcnote">Schätzung aus der offiziellen EXP-Tabelle (Version 1.0) und typischen 20–30 Std. von Lv. 1 bis 80. Wie viel du wirklich schaffst, hängt vom Fangen und Kämpfen ab.</p>`;
+}
+const xpEl=document.getElementById('xprate'); if(prefs.xprate) xpEl.value=prefs.xprate;
+function updateForecast(){
+  const P=planRoute(); const F=forecast(P.L,P.budget,P.fly,+xpEl.value,P);
+  document.getElementById('forecast').innerHTML=fcHtml(F); return F;
+}
+['lvl','mins','fly','xprate'].forEach(id=>{ const e=document.getElementById(id); e.addEventListener('change',updateForecast); e.addEventListener('input',updateForecast); });
+['lvlMinus','lvlPlus'].forEach(id=>document.getElementById(id).addEventListener('click',updateForecast));
+document.getElementById('goals').addEventListener('change',updateForecast);
 /* Was du an jedem Punkt tust und wofür */
 const EFFWHY={'Rooby Effigy':'Höher springen','Munchill Effigy':'Essen verdirbt langsamer','Herbil Effigy':'Weiter gleiten','Tanzee Effigy':'Schneller klettern','Depresso Effigy':'Schutz vor Statuseffekten','Pengullet Effigy':'Schneller schwimmen','Lamball Effigy':'Weniger Hunger'};
 function taskOf(o){
@@ -1579,7 +1644,8 @@ function buildPlan(){
     }
   });
   steps.push({k:'next'});
-  prefs.plan={L:P.L,fly:P.fly,steps,id:Date.now(),skip:[]};
+  prefs.xprate=+xpEl.value; const F=forecast(P.L,P.budget,P.fly,+xpEl.value,P);
+  prefs.plan={L:P.L,fly:P.fly,steps,id:Date.now(),skip:[],fc:{to:fl(F.now.mid),lo:fl(F.now.lo),hi:fl(F.now.hi),mins:P.budget}};
   prefs.lastCur=-1;
   ptask=new Set(); savePlanState();
 }
@@ -1647,7 +1713,7 @@ function renderPlan(){
   let cur=steps.findIndex((s,i)=>!stepIsDone(s,i,plan)); if(cur<0) cur=steps.length-1;
   const doneN=steps.slice(0,total).filter((s,i)=>stepIsDone(s,i,plan)).length;
   const rest=steps.slice(0,total).reduce((m,s,i)=>m+(stepIsDone(s,i,plan)?0:(s.mins||0)),0);
-  document.getElementById('prog').innerHTML=`<div class="progtop"><span><b>Level ${plan.L}</b> · ${doneN} von ${total} Schritten erledigt</span><span class="mins">noch ca. ${rest} Min.</span></div><div class="bar"><i style="width:${total?Math.round(doneN/total*100):0}%"></i></div>`;
+  document.getElementById('prog').innerHTML=`<div class="progtop"><span><b>Level ${plan.L}</b> · ${doneN} von ${total} Schritten erledigt</span><span class="mins">noch ca. ${rest} Min.</span></div><div class="bar"><i style="width:${total?Math.round(doneN/total*100):0}%"></i></div>${plan.fc?`<div class="progfc">Ziel für heute: <b>ca. Lv. ${plan.fc.to}</b> (${plan.fc.lo}–${plan.fc.hi}) in ${(plan.fc.mins/60).toLocaleString('de-DE')} Std.</div>`:''}`;
   const step=steps[cur], hd=stepHead(step,cur,plan), tasks=stepTasks(step,cur,plan);
   let h=`<article class="stepcard"><div class="eyebrow">${step.k==='next'?'Geschafft':'Was jetzt? · Schritt '+(cur+1)+' von '+total}${step.mins?' · ca. '+step.mins+' Min.':''}</div><h3 class="steptitle">${hd.title}</h3><div class="stepsub">${hd.sub}</div>`;
   if(hd.warn) h+=`<div class="warn">${hd.warn}</div>`;
@@ -1702,7 +1768,7 @@ function renderPlan(){
   document.querySelectorAll('[data-undo]').forEach(b=>b.addEventListener('click',()=>{ const i=+b.dataset.undo; plan.skip=(plan.skip||[]).filter(x=>x!==i); markStep(i,false); }));
   if(prefs.lastCur!==cur && tab==='plan'){ prefs.lastCur=cur; savePrefs(); setTimeout(()=>focusStep(cur,false),50); }
 }
-function openSetup(){ const s=document.getElementById('setup'); s.hidden=false; s.dataset.forced='1'; document.getElementById('run').hidden=true; document.getElementById('cancelNew').hidden=!prefs.plan; if(prefs.plan) lvlEl.value=prefs.plan.L; }
+function openSetup(){ setTimeout(updateForecast,0); const s=document.getElementById('setup'); s.hidden=false; s.dataset.forced='1'; document.getElementById('run').hidden=true; document.getElementById('cancelNew').hidden=!prefs.plan; if(prefs.plan) lvlEl.value=prefs.plan.L; }
 document.getElementById('newPlan').addEventListener('click',openSetup);
 document.getElementById('cancelNew').addEventListener('click',()=>{ const s=document.getElementById('setup'); delete s.dataset.forced; renderPlan(); });
 document.getElementById('makePlan').addEventListener('click',()=>{ native.bump(); clampLvl(); buildPlan(); const s=document.getElementById('setup'); delete s.dataset.forced; renderPlan(); });
@@ -1971,7 +2037,7 @@ document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{
 }));
 
 /* ---------- Start ---------- */
-setBase(); regVis();
+setBase(); regVis(); updateForecast();
 renderChips(); renderLayerList(); renderProgress(); renderLegend(); renderPlan();
 if(prefs.tab) setTab(prefs.tab);
 sheetTo('half',false); fitHome(false);
